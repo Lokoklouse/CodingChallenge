@@ -4,11 +4,14 @@
 #include <QObject>
 #include <QString>
 
+/*!
+ * \brief The ChatServer class
+ * Class that handles the back end of sending and recieving messages,
+ * as well as any extra formatting that is needed.
+ */
 class ChatServer : public QObject
 {
     Q_OBJECT
-
-    //Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
 
 public:
     explicit ChatServer(QObject *parent = nullptr);

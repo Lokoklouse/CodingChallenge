@@ -10,32 +10,36 @@ Item {
         fill: parent
     }
 
+    //properties
     property var userNameData: "User"
     property var userNameColor: "red"
     property var name: "default"
 
+    //Message sender function.
+    //Created to avoid copying code into the send button as well as the text field
     function sendMessage() {
 
-        if(inputField.text != "")
+        if(inputField.text != "") //If the message field isn't empty
         {
             console.log("Sending Message: <b><font color= " + userNameColor + ">" + userNameData +"</b></font>" + inputField.text)
 
+            //Chat server message handler function
             server.sendMessage(userNameData, inputField.text, userNameColor)
 
+            //Clear the inputField since we sent the message
             inputField.clear()
         }
-        else
+        else //Empty input, send no message
             console.log("Nothing to send")
     }
 
+    //function that accepts the message and posts it to the rich text field with the required formatting
     function acceptMessage(message, message2, color)
     {
-        if(chatBoxText.text != "")
-            chatBoxText.text += "<b><font color= " + color + ">" + message +"</b></font>" + message2
-        else
-            chatBoxText.text = "<b><font color= " + color + ">" + message +"</b></font>" + message2
+        chatBoxText.text += "<b><font color= " + color + ">" + message +"</b></font>" + message2
     }
 
+    //Once created register with the C++ class
     Component.onCompleted: server.registerClient(name, this);
 
     Rectangle
@@ -53,35 +57,39 @@ Item {
         }
     }
 
+    //Text input field for users to input in. Contains placeholder text
+    //Text field is used to get enter key functionality
     TextField
     {
         id: inputField
         height: 30
         width: parent.width - sendButton.width
         anchors.top: userName.bottom
+        font.pointSize: 12
 
         placeholderText: qsTr("Enter Message...")
 
         onAccepted: sendMessage()
-
     }
+
+    //Send button for sending a message on click
     Rectangle
     {
         id: sendButton
-        height: 30
+        height: inputField.height
         width: 80
         anchors.left: inputField.right
         anchors.top: inputField.top
         color: "light grey"
         border.color: "black"
-        border.width: 1
+        border.width: 2
 
         Text {
             id: sendText
             text: qsTr("Send")
             anchors.centerIn: parent
         }
-
+        //used to get the mouse click
         MouseArea {
             height: parent.height
             width: parent.width
@@ -90,14 +98,23 @@ Item {
         }
     }
 
-    TextEdit {
-        id: chatBoxText
-        textFormat: TextEdit.RichText
+    //ScrollView for the chat window in case the chat gets outside the window
+    ScrollView {
+        id: chatScrollView
         height: parent.height - inputField.height - userName.height
         width: parent.width
         anchors.top: inputField.bottom
-        readOnly: true
-        objectName: "inputFieldthing"
-    }
+        clip: true
 
+        TextEdit {
+            id: chatBoxText
+            textFormat: TextEdit.RichText
+            height: parent.height
+            width: parent.width
+            anchors.top: parent.top
+            readOnly: true //readonly so the user can't type in the text edit
+            font.pointSize: 12
+            Component.onCompleted: chatBoxText.clear()
+        }
+    }
 }
