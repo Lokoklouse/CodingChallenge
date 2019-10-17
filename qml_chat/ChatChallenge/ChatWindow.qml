@@ -73,29 +73,19 @@ Item {
     }
 
     //Send button for sending a message on click
-    Rectangle
+    Button
     {
         id: sendButton
         height: inputField.height
         width: 80
         anchors.left: inputField.right
         anchors.top: inputField.top
-        color: "light grey"
-        border.color: "black"
-        border.width: 2
+        text: qsTr("Send")
 
-        Text {
-            id: sendText
-            text: qsTr("Send")
-            anchors.centerIn: parent
-        }
-        //used to get the mouse click
-        MouseArea {
-            height: parent.height
-            width: parent.width
-
-            onClicked: sendMessage()
-        }
+        onClicked: sendMessage()
+//        color: "light grey"
+//        border.color: "black"
+//        border.width: 2
     }
 
     //ScrollView for the chat window in case the chat gets outside the window
@@ -108,10 +98,11 @@ Item {
 
         TextEdit {
             id: chatBoxText
-            textFormat: TextEdit.RichText
             height: parent.height
             width: parent.width
             anchors.top: parent.top
+            textFormat: TextEdit.RichText
+            wrapMode: TextEdit.Wrap
             readOnly: true //readonly so the user can't type in the text edit
             font.pointSize: 12
             Component.onCompleted: chatBoxText.clear()

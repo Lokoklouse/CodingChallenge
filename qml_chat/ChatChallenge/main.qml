@@ -31,8 +31,6 @@ Window {
         visible: true
         width: 500
         height: 500
-        y: window1.y + window1.height
-        x: window1.x
         title: qsTr("Chat Window 2")
 
         ChatWindow {
