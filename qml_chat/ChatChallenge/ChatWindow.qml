@@ -65,7 +65,7 @@ Item {
         height: 30
         width: parent.width - sendButton.width
         anchors.top: userName.bottom
-        font.pointSize: 12
+        font.pointSize: 11
 
         placeholderText: qsTr("Enter Message...")
 
@@ -101,7 +101,7 @@ Item {
             textFormat: TextEdit.RichText
             wrapMode: TextEdit.Wrap
             readOnly: true //readonly so the user can't type in the text edit
-            font.pointSize: 12
+            font.pointSize: 11
             Component.onCompleted: chatBoxText.clear()
         }
     }
