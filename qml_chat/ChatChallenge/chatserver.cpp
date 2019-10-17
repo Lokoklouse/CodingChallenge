@@ -9,25 +9,20 @@ ChatServer::ChatServer(QObject *parent) :
 {
 }
 
-void ChatServer::registerClient()
+void ChatServer::registerClient(QString clientID, QObject *object)
 {
-    QObject::sender();
     /*your implementation here*/
-    qDebug() << "registering";
+    qDebug() << "registering: " << clientID;
 
-    QQmlEngine engine;
-    QQmlComponent component(&engine, "ChatWindow.qml");
-    QObject *object = component.create();
-
-//    clients.insert({object->objectName().toStdString(), object});
-
-//    for (auto itr = clients.begin(); itr != clients.end(); ++itr) {
-//            qDebug() << '\t' << itr->second << '\n';
-//        }
+    clients.insert({clientID.toStdString(), object});
 }
 
-void ChatServer::sendMessage()
+void ChatServer::sendMessage(QString username, QString message, QString color)
 {
     /*your implementation here*/
+    username += ": ";
+    message += "\n";
+
+    emit transmitMessage(username,message,color);
 }
 

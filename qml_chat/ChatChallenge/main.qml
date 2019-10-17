@@ -12,12 +12,16 @@ Window {
     ChatServer {
         id: server
 
+        onTransmitMessage: {
+            chat1.acceptMessage(userName, messageText, color)
+            chat2.acceptMessage(userName, messageText, color)
+        }
     }
 
     ChatWindow {
         id: chat1
+        name: "ChatWindow1"
         userNameData: "Brian"
-        // Set this chat instance's specific properties here
     }
 
     Window {
@@ -29,14 +33,9 @@ Window {
 
         ChatWindow {
             id: chat2
+            name: "ChatWindow2"
             userNameData: "CodingChallenge"
             userNameColor: "blue"
-            // Set this chat instance's specific properties here
         }
-    }
-
-    function textSender(message1, message2, color){
-        chat1.acceptMessage(message1, message2, color)
-        chat2.acceptMessage(message1, message2, color)
     }
 }

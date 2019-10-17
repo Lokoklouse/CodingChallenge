@@ -1,36 +1,48 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.5
+import CS 1.0
 
 Item {
     id: root
+    objectName: name
+
     anchors {
         fill: parent
     }
 
     property var userNameData: "User"
     property var userNameColor: "red"
+    property var name: "default"
 
     function sendMessage() {
 
-        chatServer.sendMessage()
-        console.log("Sending: ", userNameText.text + ": " + textBox.text + "\n")
+        if(inputField.text != "")
+        {
+            console.log("Sending Message: <b><font color= " + userNameColor + ">" + userNameData +"</b></font>" + inputField.text)
 
-        textSender(userNameText.text + ": ", textBox.text + "\n", userNameColor)
-        textBox.clear()
+            server.sendMessage(userNameData, inputField.text, userNameColor)
+
+            inputField.clear()
+        }
+        else
+            console.log("Nothing to send")
     }
 
     function acceptMessage(message, message2, color)
     {
-        chatBoxText.text += "<b><font color= " + color + ">" + message +"</b></font>" + message2
+        if(chatBoxText.text != "")
+            chatBoxText.text += "<b><font color= " + color + ">" + message +"</b></font>" + message2
+        else
+            chatBoxText.text = "<b><font color= " + color + ">" + message +"</b></font>" + message2
     }
+
+    Component.onCompleted: server.registerClient(name, this);
 
     Rectangle
     {
         id: userName
         height: 30
         width: parent.width
-        border.color: "red"
-        border.width: 1
 
         Text {
             id: userNameText
@@ -43,11 +55,14 @@ Item {
 
     TextField
     {
-        id: textBox
+        id: inputField
         height: 30
         width: parent.width - sendButton.width
         anchors.top: userName.bottom
-        onAccepted: sendMessage();
+
+        placeholderText: qsTr("Enter Message...")
+
+        onAccepted: sendMessage()
 
     }
     Rectangle
@@ -55,9 +70,10 @@ Item {
         id: sendButton
         height: 30
         width: 80
-        anchors.left: textBox.right
-        anchors.top: textBox.top
-        border.color: "green"
+        anchors.left: inputField.right
+        anchors.top: inputField.top
+        color: "light grey"
+        border.color: "black"
         border.width: 1
 
         Text {
@@ -70,20 +86,18 @@ Item {
             height: parent.height
             width: parent.width
 
-            onClicked: sendMessage();
+            onClicked: sendMessage()
         }
     }
+
     TextEdit {
         id: chatBoxText
         textFormat: TextEdit.RichText
-        height: parent.height - textBox.height - userName.height
+        height: parent.height - inputField.height - userName.height
         width: parent.width
-        anchors.top: textBox.bottom
+        anchors.top: inputField.bottom
         readOnly: true
-        objectName: "textboxthing"
+        objectName: "inputFieldthing"
     }
 
-    Component.onCompleted: chatServer.registerClient();
-
-    // Add your chat transcript box, message input box, and message sending button here
 }
