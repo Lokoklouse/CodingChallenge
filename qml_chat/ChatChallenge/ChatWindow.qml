@@ -83,9 +83,6 @@ Item {
         text: qsTr("Send")
 
         onClicked: sendMessage()
-//        color: "light grey"
-//        border.color: "black"
-//        border.width: 2
     }
 
     //ScrollView for the chat window in case the chat gets outside the window
